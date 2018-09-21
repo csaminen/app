@@ -4,6 +4,6 @@ node{
 		git 'https://github.com/csaminen/app.git'
 	}
 	stage('Maven Packaging'){
-		mvn clean package
+		sh 'mvn package'
 	}
 }
