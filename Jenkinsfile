@@ -8,7 +8,8 @@ node{
 		sh "${mavenHome}/bin/mvn package"
 	}
 	stage('Installing Docker'){
-		sh aws pwd
+		pwd()
+		//sh aws pwd
 		//sh 'sudo su'
 		//sh 'yum update -y'
 		//sh 'yum install docker -y'
