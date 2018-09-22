@@ -7,4 +7,11 @@ node{
 		def mavenHome = tool name: 'maven3', type: 'maven'
 		sh "${mavenHome}/bin/mvn package"
 	}
+	stage('Installing Docker'){
+		sh 'sudo yum update -y'
+		sh 'sudo yum install docker -y'
+		sh 'sudo service docker start'
+		//For adding the ec2-user to the docker group so we can execute Docker commands without using sudo.
+		sh 'sudo usermod -a -G docker ec2-user'
+	}
 }
