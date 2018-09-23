@@ -7,6 +7,14 @@ node{
 		def mavenHome = tool name: 'maven-3.5.4', type: 'maven'
 		sh "${mavenHome}/bin/mvn package"
 	}
+	
+	stage('Deploy to Tomcat'){
+
+		sshagent(['EC2-Slave']){
+			sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/project_pipeline/target/myweb-0.0.1.war ec2-user@18.212.207.99:/opt/apache-tomcat-8.5.34/webapps'
+		}
+
+	}
 	stage('Email Notification'){
 		mail bcc: '', body: 'Deployed Successfully', cc: '', from: '', replyTo: '', subject: 'Deployed Successfully', to: 'chinnarsamineni@gmail.com'
 
