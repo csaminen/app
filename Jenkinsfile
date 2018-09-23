@@ -4,7 +4,7 @@ node{
 	}
 	stage('Maven Packaging'){
 		//Getting maven home path
-		def mavenHome = tool name: 'maven3', type: 'maven'
+		def mavenHome = tool name: 'maven-3.5.4', type: 'maven'
 		sh "${mavenHome}/bin/mvn package"
 	}
 	stage('Installing Docker'){
