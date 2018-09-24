@@ -7,6 +7,9 @@ node{
 		def mavenHome = tool name: 'maven-3.5.4', type: 'maven'
 		sh "${mavenHome}/bin/mvn package"
 	}
+	stage('Build Docker Image'){
+     		sh 'docker build -t csaminen/my-app:2.0.0 .'
+   	}
 	stage('Email Notification'){
 		mail bcc: '', body: 'Deployed Successfully', cc: '', from: '', replyTo: '', subject: 'Deployed Successfully', to: 'chinnarsamineni@gmail.com'
 
