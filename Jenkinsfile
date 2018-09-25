@@ -8,19 +8,35 @@ node{
 		sh "${mavenHome}/bin/mvn package"
 	}
 	stage('Build Docker Image'){
-     		sh 'docker build -t csaminen/my-app:2.0.0 .'
+     	sh 'docker build -t csaminen/my-app:2.0.0 .'
    	}
-	stage('Push Docker Image'){
-     		withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
-			sh "docker login -u csaminen -p ${dockerHubPwd}"
-     		}
-     		sh 'docker push csaminen/my-app:2.0.0'
-   	}
+   	stage('Push Docker Image'){
+        when{
+            branch 'master'
+        }
+        steps {
+            script {
+                docker.withRegistry('https://registry.hub.docker.com', 'docker-saikrishna'){
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest")
+                }
+            }
+        }
+    }
+	
 	stage('Email Notification'){
 		mail bcc: '', body: 'Deployed Successfully', cc: '', from: '', replyTo: '', subject: 'Deployed Successfully', to: 'chinnarsamineni@gmail.com'
 
 	}
 }
+
+
+//stage('Push Docker Image'){
+     	//withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
+			//sh "docker login -u kammana -p ${dockerHubPwd}"
+     	//}
+     	//sh 'docker push kammana/my-app:2.0.0'
+   	//}
 	
 	
 	//stage('Deploy to Tomcat'){
