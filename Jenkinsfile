@@ -8,7 +8,13 @@ node{
 		sh "${mavenHome}/bin/mvn package"
 	}
 	stage('Build Docker Image'){
-     		sh 'docker build -t csaminen/my-app:2.0.0 .'
+     	sh 'docker build -t csaminen/my-app:2.0.0 .'
+   	}
+	stage('Push Docker Image'){
+     	withCredentials([string(credentialsId: 'docker-pwd', variable: 'dockerHubPwd')]) {
+			sh "docker login -u kammana -p ${dockerHubPwd}"
+     	}
+     	sh 'docker push kammana/my-app:2.0.0'
    	}
 	stage('Email Notification'){
 		mail bcc: '', body: 'Deployed Successfully', cc: '', from: '', replyTo: '', subject: 'Deployed Successfully', to: 'chinnarsamineni@gmail.com'
