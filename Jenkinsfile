@@ -1,6 +1,6 @@
 node{
     stage('SCM Check Out'){
-        git 'https://github.com/csaminen/app.git'
+        git changelog: false, credentialsId: 'githubid', poll: false, url: 'https://github.com/csaminen/app.git'
     }
 }
     // stage('Maven Packaging'){
